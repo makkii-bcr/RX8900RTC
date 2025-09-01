@@ -76,8 +76,9 @@ tmElements_t RX8900RTC::read(void) {
  * Sets the RTC's time from a tmElements_t structure.                   *
  *----------------------------------------------------------------------*/
 uint8_t RX8900RTC::write(tmElements_t tm) {
-  uint8_t dayOfWeek = subZeller(tm.Year, tm.Month, tm.Day);
-  tm.Wday = 1 << (dayOfWeek - 1);
+  uint8_t dayOfWeek = subZeller(tmYearToCalendar(tm.Year), tm.Month, tm.Day);
+  tm.Wday = 1 << dayOfWeek;
+
   RESET();
   ByteWrite(SEC_reg,dec2bcd(tm.Second));
   ByteWrite(MIN_reg,dec2bcd(tm.Minute));
